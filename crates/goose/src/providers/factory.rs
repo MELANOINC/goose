@@ -206,7 +206,10 @@ mod tests {
             ("GOOSE_LEAD_TURNS", env::var("GOOSE_LEAD_TURNS").ok()),
             ("OPENAI_API_KEY", env::var("OPENAI_API_KEY").ok()),
             ("ANTHROPIC_API_KEY", env::var("ANTHROPIC_API_KEY").ok()),
-            ("GOOSE_DISABLE_KEYRING", env::var("GOOSE_DISABLE_KEYRING").ok()),
+            (
+                "GOOSE_DISABLE_KEYRING",
+                env::var("GOOSE_DISABLE_KEYRING").ok(),
+            ),
         ];
 
         // Disable keyring to avoid keychain popups during tests
@@ -235,7 +238,7 @@ mod tests {
                 assert!(
                     !error_msg.contains("not found") || // Configuration not found
                     error_msg.contains("invalid") ||    // Invalid API key format
-                    error_msg.contains("unauthorized")  // API validation failed
+                    error_msg.contains("unauthorized") // API validation failed
                 );
             }
         }
@@ -272,7 +275,10 @@ mod tests {
                 env::var("GOOSE_LEAD_FALLBACK_TURNS").ok(),
             ),
             ("OPENAI_API_KEY", env::var("OPENAI_API_KEY").ok()),
-            ("GOOSE_DISABLE_KEYRING", env::var("GOOSE_DISABLE_KEYRING").ok()),
+            (
+                "GOOSE_DISABLE_KEYRING",
+                env::var("GOOSE_DISABLE_KEYRING").ok(),
+            ),
         ];
 
         // Disable keyring to avoid keychain popups during tests
@@ -302,10 +308,10 @@ mod tests {
                 let error_msg = error.to_string().to_lowercase();
                 // Allow various provider-level failures but not keychain issues
                 assert!(
-                    error_msg.contains("invalid") ||
-                    error_msg.contains("unauthorized") ||
-                    error_msg.contains("model") ||
-                    !error_msg.contains("not found")
+                    error_msg.contains("invalid")
+                        || error_msg.contains("unauthorized")
+                        || error_msg.contains("model")
+                        || !error_msg.contains("not found")
                 );
             }
         }
@@ -334,10 +340,19 @@ mod tests {
             ("GOOSE_LEAD_MODEL", env::var("GOOSE_LEAD_MODEL").ok()),
             ("GOOSE_LEAD_PROVIDER", env::var("GOOSE_LEAD_PROVIDER").ok()),
             ("GOOSE_LEAD_TURNS", env::var("GOOSE_LEAD_TURNS").ok()),
-            ("GOOSE_LEAD_FAILURE_THRESHOLD", env::var("GOOSE_LEAD_FAILURE_THRESHOLD").ok()),
-            ("GOOSE_LEAD_FALLBACK_TURNS", env::var("GOOSE_LEAD_FALLBACK_TURNS").ok()),
+            (
+                "GOOSE_LEAD_FAILURE_THRESHOLD",
+                env::var("GOOSE_LEAD_FAILURE_THRESHOLD").ok(),
+            ),
+            (
+                "GOOSE_LEAD_FALLBACK_TURNS",
+                env::var("GOOSE_LEAD_FALLBACK_TURNS").ok(),
+            ),
             ("OPENAI_API_KEY", env::var("OPENAI_API_KEY").ok()),
-            ("GOOSE_DISABLE_KEYRING", env::var("GOOSE_DISABLE_KEYRING").ok()),
+            (
+                "GOOSE_DISABLE_KEYRING",
+                env::var("GOOSE_DISABLE_KEYRING").ok(),
+            ),
         ];
 
         // Disable keyring to avoid keychain popups during tests
@@ -349,7 +364,7 @@ mod tests {
         env::remove_var("GOOSE_LEAD_TURNS");
         env::remove_var("GOOSE_LEAD_FAILURE_THRESHOLD");
         env::remove_var("GOOSE_LEAD_FALLBACK_TURNS");
-        
+
         // Set fake API key to avoid keychain access
         env::set_var("OPENAI_API_KEY", "fake-test-key");
 
@@ -366,9 +381,9 @@ mod tests {
                 let error_msg = error.to_string().to_lowercase();
                 // Allow provider-level failures but not keychain issues
                 assert!(
-                    error_msg.contains("invalid") ||
-                    error_msg.contains("unauthorized") ||
-                    !error_msg.contains("not found")
+                    error_msg.contains("invalid")
+                        || error_msg.contains("unauthorized")
+                        || !error_msg.contains("not found")
                 );
             }
         }
