@@ -1,0 +1,136 @@
+{
+  "timestamp": 1751956079.822456,
+  "agent_version": "3.0.0",
+  "total_tests": 21,
+  "tests_passed": 20,
+  "tests_failed": 1,
+  "success_rate": 95.23809523809523,
+  "test_details": [
+    {
+      "test": "Agent Initialization",
+      "passed": true,
+      "message": "Agente inicializado correctamente",
+      "timestamp": 1751956077.714201
+    },
+    {
+      "test": "Intención: 'Quiero invertir en crypto'",
+      "passed": true,
+      "message": "Detectada: inversión",
+      "timestamp": 1751956077.714201
+    },
+    {
+      "test": "Intención: 'Necesito vender más productos'",
+      "passed": true,
+      "message": "Detectada: ventas",
+      "timestamp": 1751956077.7152004
+    },
+    {
+      "test": "Intención: 'Busco propiedades en Buenos Aires'",
+      "passed": true,
+      "message": "Detectada: real_estate",
+      "timestamp": 1751956077.7152004
+    },
+    {
+      "test": "Intención: 'Automatizar mi negocio'",
+      "passed": true,
+      "message": "Detectada: automatización",
+      "timestamp": 1751956077.7152004
+    },
+    {
+      "test": "Intención: 'Hola, ¿cómo estás?'",
+      "passed": true,
+      "message": "Detectada: consulta_general",
+      "timestamp": 1751956077.7152004
+    },
+    {
+      "test": "Lead Scoring (urgencia: alta)",
+      "passed": true,
+      "message": "Score: 100, Clasificación: HOT LEAD 🔥",
+      "timestamp": 1751956077.7161977
+    },
+    {
+      "test": "Lead Scoring (urgencia: media)",
+      "passed": true,
+      "message": "Score: 60, Clasificación: WARM LEAD ⭐",
+      "timestamp": 1751956077.7161977
+    },
+    {
+      "test": "Lead Scoring (urgencia: baja)",
+      "passed": true,
+      "message": "Score: 25, Clasificación: COLD LEAD ❄️",
+      "timestamp": 1751956077.7161977
+    },
+    {
+      "test": "Respuesta (Argentina, real_estate)",
+      "passed": true,
+      "message": "Generada respuesta de 599 caracteres",
+      "timestamp": 1751956077.7730749
+    },
+    {
+      "test": "Respuesta (España, automatización)",
+      "passed": true,
+      "message": "Generada respuesta de 717 caracteres",
+      "timestamp": 1751956077.7750413
+    },
+    {
+      "test": "Respuesta (México, inversión)",
+      "passed": true,
+      "message": "Generada respuesta de 605 caracteres",
+      "timestamp": 1751956077.7750413
+    },
+    {
+      "test": "Zona horaria Argentina",
+      "passed": true,
+      "message": "Hora: 03:27:57 -03",
+      "timestamp": 1751956077.7760868
+    },
+    {
+      "test": "Zona horaria España",
+      "passed": true,
+      "message": "Hora: 08:27:57 CEST",
+      "timestamp": 1751956077.7760868
+    },
+    {
+      "test": "Zona horaria México",
+      "passed": true,
+      "message": "Hora: 00:27:57 CST",
+      "timestamp": 1751956077.7760868
+    },
+    {
+      "test": "Zona horaria Colombia",
+      "passed": true,
+      "message": "Hora: 01:27:57 -05",
+      "timestamp": 1751956077.7770863
+    },
+    {
+      "test": "Personalización Argentina-inversión",
+      "passed": true,
+      "message": "Respuesta personalizada generada",
+      "timestamp": 1751956077.7770863
+    },
+    {
+      "test": "Personalización España-real_estate",
+      "passed": true,
+      "message": "Respuesta personalizada generada",
+      "timestamp": 1751956077.7780828
+    },
+    {
+      "test": "Personalización México-ventas",
+      "passed": true,
+      "message": "Respuesta personalizada generada",
+      "timestamp": 1751956077.7780828
+    },
+    {
+      "test": "Personalización Colombia-automatización",
+      "passed": true,
+      "message": "Respuesta personalizada generada",
+      "timestamp": 1751956077.7780828
+    },
+    {
+      "test": "API Status Endpoint",
+      "passed": false,
+      "message": "Status code: 404",
+      "timestamp": 1751956079.8175285
+    }
+  ]
+}

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MELANO INC - Centro de Pruebas | Testing Hub</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        
+        .melano-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+        
+        .success-gradient {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .error-gradient {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        }
+        
+        .testing-gradient {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .pulse-success {
+            animation: pulse-green 2s infinite;
+        }
+        
+        .pulse-error {
+            animation: pulse-red 2s infinite;
+        }
+        
+        @keyframes pulse-green {
+            0%, 100% { background-color: #10b981; }
+            50% { background-color: #34d399; }
+        }
+        
+        @keyframes pulse-red {
+            0%, 100% { background-color: #ef4444; }
+            50% { background-color: #f87171; }
+        }
+        
+        .test-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .tech-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .tech-card:hover::before {
+            left: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="melano-gradient text-white shadow-2xl">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-flask text-4xl animate-pulse"></i>
+                    <div>
+                        <h1 class="text-4xl font-black">CENTRO DE PRUEBAS</h1>
+                        <p class="text-xl font-light opacity-90">Testing Hub - MELANO INC</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="/dashboard" class="bg-white bg-opacity-20 px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all">
+                        <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                    </a>
+                    <a href="/" class="bg-white bg-opacity-20 px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all">
+                        <i class="fas fa-home mr-2"></i>ALENYA Chat
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        
+        <!-- Test Control Panel -->
+        <section class="mb-12">
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+                    <i class="fas fa-rocket mr-3 text-indigo-600"></i>
+                    Panel de Control de Pruebas
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <button id="test-all-btn" class="success-gradient text-white py-4 px-6 rounded-xl font-bold text-lg hover:opacity-90 transition-opacity card-hover">
+                        <i class="fas fa-play-circle mr-2"></i>
+                        Probar Todo el Ecosistema
+                    </button>
+                    
+                    <button id="stress-test-btn" class="testing-gradient text-gray-800 py-4 px-6 rounded-xl font-bold text-lg hover:opacity-90 transition-opacity card-hover">
+                        <i class="fas fa-tachometer-alt mr-2"></i>
+                        Test de Estrés
+                    </button>
+                    
+                    <button id="benchmark-btn" class="melano-gradient text-white py-4 px-6 rounded-xl font-bold text-lg hover:opacity-90 transition-opacity card-hover">
+                        <i class="fas fa-chart-line mr-2"></i>
+                        Benchmark Performance
+                    </button>
+                </div>
+
+                <!-- Status Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="status-overview">
+                    <div class="bg-gray-50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-gray-600" id="total-tests">5</div>
+                        <div class="text-sm text-gray-500">Tests Totales</div>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-green-600" id="passed-tests">0</div>
+                        <div class="text-sm text-green-500">Pasados</div>
+                    </div>
+                    <div class="bg-red-50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-red-600" id="failed-tests">0</div>
+                        <div class="text-sm text-red-500">Fallidos</div>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-blue-600" id="success-rate">0%</div>
+                        <div class="text-sm text-blue-500">Tasa de Éxito</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Individual Technology Tests -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+                <i class="fas fa-atom mr-3 text-purple-600"></i>
+                Pruebas Individuales por Tecnología
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6" id="tech-tests-grid">
+                <!-- Se llenará dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Test Results -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+                <i class="fas fa-chart-bar mr-3 text-green-600"></i>
+                Resultados de Pruebas
+            </h2>
+            
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <div id="test-results" class="min-h-64">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-info-circle text-4xl mb-4"></i>
+                        <p>Haz clic en "Probar Todo el Ecosistema" para ver los resultados aquí.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Real-time Activity -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+                <i class="fas fa-activity mr-3 text-red-600"></i>
+                Actividad en Tiempo Real
+            </h2>
+            
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <div id="activity-feed" class="space-y-3 max-h-80 overflow-y-auto">
+                    <!-- Se llenará dinámicamente -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex items-center justify-center space-x-4 mb-4">
+                <i class="fas fa-flask text-2xl text-indigo-400"></i>
+                <span class="text-2xl font-bold">MELANO INC Testing Hub</span>
+                <i class="fas fa-flask text-2xl text-indigo-400"></i>
+            </div>
+            <p class="text-gray-400">Garantizando la excelencia en cada innovación</p>
+        </div>
+    </footer>
+
+    <script>
+        // Configuración
+        const technologies = [
+            {
+                id: 'neural-forecast',
+                name: 'Quantum Neural Forecasting™',
+                patente: 'MELANO-2025-QNF-001',
+                icon: 'fas fa-brain',
+                color: 'blue',
+                endpoint: '/api/neural-forecast',
+                testData: { market: 'crypto', timeframe: '24h', risk_tolerance: 'medium' }
+            },
+            {
+                id: 'emotion-ai',
+                name: 'Emotional Intelligence AI™',
+                patente: 'MELANO-2025-EIA-002',
+                icon: 'fas fa-heart',
+                color: 'pink',
+                endpoint: '/api/emotion-ai',
+                testData: { text: 'Estoy muy interesado en invertir en nuevas tecnologías', context: 'sales' }
+            },
+            {
+                id: 'quantum-portfolio',
+                name: 'Quantum Portfolio Optimizer™',
+                patente: 'MELANO-2025-QPO-003',
+                icon: 'fas fa-chart-pie',
+                color: 'green',
+                endpoint: '/api/quantum-portfolio',
+                testData: { capital: 100000, risk_profile: 'aggressive', investment_horizon: '12m' }
+            },
+            {
+                id: 'blockchain-oracle',
+                name: 'Blockchain Oracle Intelligence™',
+                patente: 'MELANO-2025-BOI-004',
+                icon: 'fab fa-bitcoin',
+                color: 'yellow',
+                endpoint: '/api/blockchain-oracle',
+                testData: { blockchain: 'ethereum', prediction_type: 'price', timeframe: '24h' }
+            },
+            {
+                id: 'meta-learning',
+                name: 'Meta-Learning Sales Optimizer™',
+                patente: 'MELANO-2025-MLS-005',
+                icon: 'fas fa-robot',
+                color: 'purple',
+                endpoint: '/api/meta-learning',
+                testData: { sales_data: {}, optimization_goal: 'conversion' }
+            }
+        ];
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTechGrid();
+            setupEventListeners();
+            startActivityFeed();
+        });
+
+        // Crear tarjetas de tecnologías
+        function initializeTechGrid() {
+            const grid = document.getElementById('tech-tests-grid');
+            grid.innerHTML = technologies.map(tech => `
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden tech-card card-hover">
+                    <div class="bg-${tech.color}-500 p-4 text-white">
+                        <div class="flex items-center justify-between">
+                            <i class="${tech.icon} text-2xl"></i>
+                            <div class="test-status bg-gray-400" id="status-${tech.id}"></div>
+                        </div>
+                        <h3 class="font-bold mt-2">${tech.name}</h3>
+                        <p class="text-sm opacity-90">${tech.patente}</p>
+                    </div>
+                    <div class="p-4">
+                        <button onclick="testIndividualTech('${tech.id}')" class="w-full bg-${tech.color}-500 text-white py-2 rounded-lg hover:bg-${tech.color}-600 transition-colors">
+                            <i class="fas fa-play mr-1"></i>Probar
+                        </button>
+                        <div id="result-${tech.id}" class="mt-3 text-sm"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Event listeners
+        function setupEventListeners() {
+            document.getElementById('test-all-btn').addEventListener('click', testAllTechnologies);
+            document.getElementById('stress-test-btn').addEventListener('click', runStressTest);
+            document.getElementById('benchmark-btn').addEventListener('click', runBenchmark);
+        }
+
+        // Probar todas las tecnologías
+        async function testAllTechnologies() {
+            const btn = document.getElementById('test-all-btn');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<div class="loading-spinner"></div>Ejecutando Pruebas...';
+            btn.disabled = true;
+
+            addActivity('🚀 Iniciando pruebas del ecosistema completo');
+
+            try {
+                const response = await fetch('/api/test-all');
+                const results = await response.json();
+
+                if (results.success) {
+                    updateStatusOverview(results);
+                    displayResults(results);
+                    updateTechStatuses(results.resultados);
+                    addActivity('✅ Todas las pruebas completadas exitosamente');
+                } else {
+                    throw new Error(results.error || 'Error en las pruebas');
+                }
+            } catch (error) {
+                addActivity('❌ Error en las pruebas: ' + error.message);
+                displayError(error.message);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // Probar tecnología individual
+        async function testIndividualTech(techId) {
+            const tech = technologies.find(t => t.id === techId);
+            const statusElement = document.getElementById(`status-${techId}`);
+            const resultElement = document.getElementById(`result-${techId}`);
+            
+            statusElement.className = 'test-status bg-yellow-400 animate-pulse';
+            resultElement.innerHTML = '<div class="loading-spinner"></div>Probando...';
+
+            addActivity(`🔬 Probando ${tech.name}`);
+
+            try {
+                const response = await fetch(tech.endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(tech.testData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    statusElement.className = 'test-status pulse-success';
+                    resultElement.innerHTML = `
+                        <div class="text-green-600">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Funcionando correctamente
+                        </div>
+                    `;
+                    addActivity(`✅ ${tech.name} - Test exitoso`);
+                } else {
+                    throw new Error(result.error || 'Error desconocido');
+                }
+            } catch (error) {
+                statusElement.className = 'test-status pulse-error';
+                resultElement.innerHTML = `
+                    <div class="text-red-600">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                        Error: ${error.message}
+                    </div>
+                `;
+                addActivity(`❌ ${tech.name} - Error en test`);
+            }
+        }
+
+        // Actualizar resumen de estado
+        function updateStatusOverview(results) {
+            document.getElementById('passed-tests').textContent = results.tests_passed;
+            document.getElementById('failed-tests').textContent = results.tests_failed;
+            document.getElementById('success-rate').textContent = results.success_rate;
+        }
+
+        // Mostrar resultados
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('test-results');
+            resultsDiv.innerHTML = `
+                <div class="animate__animated animate__fadeIn">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-gray-800">Resultados Completos</h3>
+                        <div class="text-lg font-bold ${results.success_rate === '100.0%' ? 'text-green-600' : 'text-yellow-600'}">
+                            ${results.success_rate} Éxito
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        ${Object.entries(results.resultados).map(([name, result]) => `
+                            <div class="bg-gray-50 rounded-lg p-4 border-l-4 ${result.status.includes('PASSED') ? 'border-green-500' : 'border-red-500'}">
+                                <h4 class="font-bold text-sm mb-2">${name}</h4>
+                                <div class="space-y-1 text-xs">
+                                    <div><strong>Estado:</strong> ${result.status}</div>
+                                    ${result.response_time ? `<div><strong>Tiempo:</strong> ${result.response_time}</div>` : ''}
+                                    ${result.precision ? `<div><strong>Precisión:</strong> ${result.precision}</div>` : ''}
+                                    ${result.patente ? `<div><strong>Patente:</strong> ${result.patente}</div>` : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="mt-6 text-center">
+                        <div class="inline-flex items-center space-x-2 bg-indigo-50 px-4 py-2 rounded-lg">
+                            <i class="fas fa-clock text-indigo-600"></i>
+                            <span class="text-indigo-800">Completado: ${results.timestamp}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Actualizar estados de tecnologías
+        function updateTechStatuses(resultados) {
+            Object.entries(resultados).forEach(([name, result]) => {
+                const tech = technologies.find(t => t.name === name);
+                if (tech) {
+                    const statusElement = document.getElementById(`status-${tech.id}`);
+                    const resultElement = document.getElementById(`result-${tech.id}`);
+                    
+                    if (result.status.includes('PASSED')) {
+                        statusElement.className = 'test-status pulse-success';
+                        resultElement.innerHTML = `
+                            <div class="text-green-600">
+                                <i class="fas fa-check-circle mr-1"></i>
+                                ${result.precision}
+                            </div>
+                        `;
+                    } else {
+                        statusElement.className = 'test-status pulse-error';
+                        resultElement.innerHTML = `
+                            <div class="text-red-600">
+                                <i class="fas fa-exclamation-triangle mr-1"></i>
+                                Error
+                            </div>
+                        `;
+                    }
+                }
+            });
+        }
+
+        // Mostrar error
+        function displayError(error) {
+            const resultsDiv = document.getElementById('test-results');
+            resultsDiv.innerHTML = `
+                <div class="animate__animated animate__fadeIn">
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-4xl mb-4"></i>
+                        <h3 class="text-lg font-bold text-red-800 mb-2">Error en las Pruebas</h3>
+                        <p class="text-red-600">${error}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Test de estrés
+        async function runStressTest() {
+            addActivity('⚡ Iniciando test de estrés del sistema');
+            
+            const promises = [];
+            for (let i = 0; i < 10; i++) {
+                promises.push(fetch('/api/health'));
+            }
+            
+            try {
+                await Promise.all(promises);
+                addActivity('✅ Test de estrés completado - Sistema estable');
+            } catch (error) {
+                addActivity('❌ Test de estrés falló - Revisar sistema');
+            }
+        }
+
+        // Benchmark
+        async function runBenchmark() {
+            addActivity('📊 Ejecutando benchmark de performance');
+            
+            const startTime = Date.now();
+            await fetch('/api/innovation-hub');
+            const endTime = Date.now();
+            
+            const responseTime = endTime - startTime;
+            addActivity(`📈 Benchmark completado - ${responseTime}ms response time`);
+        }
+
+        // Feed de actividad
+        function addActivity(message) {
+            const feed = document.getElementById('activity-feed');
+            const time = new Date().toLocaleTimeString();
+            
+            const activity = document.createElement('div');
+            activity.className = 'flex items-center space-x-3 p-3 bg-gray-50 rounded-lg animate__animated animate__fadeInRight';
+            activity.innerHTML = `
+                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800">${message}</p>
+                    <p class="text-xs text-gray-500">${time}</p>
+                </div>
+            `;
+            
+            feed.insertBefore(activity, feed.firstChild);
+            
+            // Mantener solo los últimos 10 elementos
+            while (feed.children.length > 10) {
+                feed.removeChild(feed.lastChild);
+            }
+        }
+
+        // Actividad inicial
+        function startActivityFeed() {
+            addActivity('🏁 Testing Hub inicializado correctamente');
+            addActivity('🔧 Todos los sistemas listos para pruebas');
+        }
+    </script>
+</body>
+</html>
